@@ -1,26 +1,30 @@
-import type { APIRoute, APIContext } from "astro";
+// src/pages/api/data.ts
+import { APIContext } from "astro";
 
-function getSimpleResponse() {
-  return new Promise<Response>((resolve, reject) => {
-    setTimeout(() => {
-      // Create a simple Response object
-      const response = new Response(
-        JSON.stringify({ message: "Hello, World!" }),
-        {
-          status: 200,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+export async function POST({ request }: APIContext) {
+  try {
+    const body = await request.json(); // Get the JSON body from the request
+    console.log("Received data:", body);
 
-      // Resolve the promise with the response
-      resolve(response);
-    }, 1000); // Simulate a 1-second delay
-  });
+    return new Response(
+      JSON.stringify({
+        message: "Data received successfully",
+        receivedData: body,
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+      status: 400,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 }
-
-export const POST: APIRoute = async (context: APIContext) => {
-  const formData = await context.request.formData();
-  return getSimpleResponse();
-};
