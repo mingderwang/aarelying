@@ -1,6 +1,6 @@
 {
   "name": "aarelying",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This is a boilerplate for backend typescript projects using express.js.",
   "main": "src/server.ts",
   "license": "MIT",
